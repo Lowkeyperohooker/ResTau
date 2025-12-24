@@ -56,4 +56,22 @@ class OrderController extends Controller
             return response()->json(['error' => 'Order failed: ' . $e->getMessage()], 500);
         }
     }
+
+    // Get a list of all orders (newest first)
+    public function index()
+    {
+        $orders = DB::table('orders')
+            ->join('users', 'orders.user_id', '=', 'users.id')
+            ->select(
+                'orders.id',
+                'orders.total_amount',
+                'orders.status',
+                'orders.created_at',
+                'users.username as cashier_name'
+            )
+            ->orderBy('orders.created_at', 'desc')
+            ->get();
+
+        return response()->json($orders);
+    }
 }

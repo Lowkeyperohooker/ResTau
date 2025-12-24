@@ -11,3 +11,10 @@ use App\Http\Controllers\MenuItemController;
 
 // This will be accessible at http://localhost:8000/api/menu-items
 Route::get('/menu-items', [MenuItemController::class, 'index']);
+
+
+use App\Http\Controllers\Api\OrderController;
+
+// ... existing routes ...
+
+Route::post('/orders', [OrderController::class, 'store']);

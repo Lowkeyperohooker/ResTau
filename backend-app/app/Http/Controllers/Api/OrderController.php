@@ -60,17 +60,28 @@ class OrderController extends Controller
     // Get a list of all orders (newest first)
     public function index()
     {
+        // 1. Fetch all orders
         $orders = DB::table('orders')
             ->join('users', 'orders.user_id', '=', 'users.id')
-            ->select(
-                'orders.id',
-                'orders.total_amount',
-                'orders.status',
-                'orders.created_at',
-                'users.username as cashier_name'
-            )
-            ->orderBy('orders.created_at', 'desc')
+            ->select('orders.*', 'users.username as cashier_name')
+            ->orderBy('created_at', 'desc')
             ->get();
+
+        // 2. Fetch all items related to these orders
+        $orderIds = $orders->pluck('id');
+        
+        $items = DB::table('order_items')
+            ->join('menu_items', 'order_items.menu_item_id', '=', 'menu_items.id')
+            ->whereIn('order_id', $orderIds)
+            ->select('order_items.*', 'menu_items.name')
+            ->get()
+            ->groupBy('order_id');
+
+        // 3. Merge them together
+        $orders->transform(function ($order) use ($items) {
+            $order->items = $items->get($order->id) ?? [];
+            return $order;
+        });
 
         return response()->json($orders);
     }

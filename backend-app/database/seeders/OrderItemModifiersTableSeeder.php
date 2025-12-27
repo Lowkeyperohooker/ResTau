@@ -16,7 +16,7 @@ class OrderItemModifiersTableSeeder extends Seeder
     {
         
 
-        \DB::table('order_item_modifiers')->delete();
+        // \DB::table('order_item_modifiers')->delete();
         
         
         

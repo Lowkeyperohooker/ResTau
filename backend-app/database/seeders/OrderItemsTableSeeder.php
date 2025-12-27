@@ -16,7 +16,7 @@ class OrderItemsTableSeeder extends Seeder
     {
         
 
-        \DB::table('order_items')->delete();
+        // \DB::table('order_items')->delete();
         
         \DB::table('order_items')->insert(array (
             0 => 

@@ -14,8 +14,8 @@ class DatabaseSeeder extends Seeder
         
         // 2. Clear tables
         DB::table('payments')->truncate();
-        DB::table('order_item_modifiers')->truncate();
-        DB::table('order_items')->truncate();
+        // DB::table('order_item_modifiers')->truncate();
+        // DB::table('order_items')->truncate();
         DB::table('orders')->truncate();
         DB::table('item_modifier_links')->truncate();
         DB::table('menu_items')->truncate();

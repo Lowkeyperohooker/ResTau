@@ -6,20 +6,22 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('menu_items', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            // This is the column that was missing
+            $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
+            
+            $table->string('name', 150);
+            $table->text('description')->nullable();
+            $table->decimal('price', 10, 2);
+            $table->boolean('is_available')->default(1);
+            $table->string('image', 255)->nullable();
+            // $table->timestamps(); // Optional, since your dump didn't have created_at/updated_at for this table
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('menu_items');
